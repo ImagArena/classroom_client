@@ -29,6 +29,7 @@ node_modules
 # Bower
 bower_components/
 
-#Static 
+#Static
 
-server/public
+server/public/photos
+server/*.mov
