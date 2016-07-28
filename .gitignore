@@ -34,3 +34,4 @@ bower_components/
 server/public/photos
 server/*.mov
 server/*.mp4
+.DS_Store
