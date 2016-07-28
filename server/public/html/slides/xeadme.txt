@@ -1,0 +1,55 @@
+ 1/18/16
+
+//0= WalkIn
+1= Welcome Animation
+//2= What is Imagination?
+3= Formula1
+4= Tutorial
+5= DistributeArenas
+	
+	6= Load
+	7= OPEN_MuffinCrayonClip
+	8= 1min TL
+	9= 1min TMR
+	10= Clear
+	11= Map1
+
+	12= Load
+	13= OPEN_PaperStringTapeTissue
+	14= 1min TL
+	15= 1min TMR
+	16= Clear
+	17= Map2
+	
+	18= Load
+	19= OPEN_ToothPaperClay
+	20= 1min TL
+	21= 1min TMR
+	22= Clear
+	23= Map3
+
+	24= Load
+	25= OPEN_PostitSticker
+	26= 1min TL
+	27= 1min TMR
+	28= Clear
+	29= Map4
+
+	30= Load
+	31= OPEN_Paperclip
+	32= 30s TL
+	33= 30s TMR
+	34= Clear
+	35= Map5
+
+36= Challenge
+37= 2min TL
+38= 2min TMR
+39= Map6
+//40= Cleanup
+//41= Walk-In
+
+
+	
+	
+	

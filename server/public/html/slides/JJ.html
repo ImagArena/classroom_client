@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+	<head>
+			
+		<title></title>
+			
+		<!-- CSS -->
+			
+		<link href="../../css/Slide.css" rel="stylesheet">
+	
+	</head>
+
+	<body>
+		
+		<video autoplay  id="bgvid">
+				<!-- VID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+				<source src="../Content/CLEAR_MSTR-.mp4" type="video/mp4"> 
+		</video>
+
+		<script>
+
+		window.onkeydown = function(){
+		  checkKey(event);
+		};
+
+		/// NEXT SLIDE
+		function checkKey(event) {
+			var key = event.keyCode;
+				if (key == 38){
+					/// SLIDE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+					window.location.href = "18.html"
+					}
+				else if( key === 40){
+					var video = document.getElementById('bgvid');
+						video.paused ? video.play() : video.pause();
+					}
+		}
+		</script>
+
+	</body>
+
+</html>
