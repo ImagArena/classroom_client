@@ -1,0 +1,51 @@
+#dropzone-container{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	div {
+		cursor: pointer;
+	}
+
+	#dropzone{
+		text-align: center;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 10px;
+	}
+}
+h2 {
+	float: left;
+	margin-left: 15px;
+}
+#class-name{
+	clear: both;
+	margin: 0 auto;
+	display: block;
+	width: 400px;
+	text-align: center;
+	background: rgba(255,255,255, 0.5);
+	outline: none;
+	border: 0;
+	padding: 10px;
+	border-radius: 5px;
+	font-size: 24px;
+	transition: 1s;
+	font-weight: 100;
+	margin-bottom: 40px;
+
+	&:focus { background-color: rgba(255, 255, 255, 0.8) }
+
+	&::-webkit-input-placeholder { color: white; opacity: 0.9; transition: opacity 0.25s; }
+	&:-moz-placeholder { color: white; opacity: 0.9; transition: opacity 0.25s; }
+	&::-moz-placeholder { color: white; opacity: 0.9; transition: opacity 0.25s; }
+	&:-ms-input-placeholder { color: white; opacity: 0.9; transition: opacity 0.25s; }
+
+	&:focus::-webkit-input-placeholder { opacity: 0; }
+	&:focus:-moz-placeholder { opacity: 0; }
+	&:focus::-moz-placeholder { opacity: 0; }
+	&:focus:-ms-input-placeholder { opacity: 0; }
+}

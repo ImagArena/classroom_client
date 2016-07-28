@@ -1,0 +1,18 @@
+{
+  "name": "blah",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Tom Wall",
+  "license": "MIT",
+  "dependencies": {
+    "babel": "^5.8.23",
+    "body-parser": "^1.14.1",
+    "busboy": "^0.2.13",
+    "connect-busboy": "0.0.2",
+    "express": "^4.13.3",
+    "fs-extra": "^0.30.0",
+    "path": "^0.12.7"
+  }
+}

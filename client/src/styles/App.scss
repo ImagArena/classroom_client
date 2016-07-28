@@ -1,0 +1,45 @@
+/* Base Application Styles */
+body {
+  color: #fff;
+  background: #222;
+}
+
+#navbar{
+	background-color: whitesmoke;
+	float: left;
+	width: 100%;
+	padding: 10px 0px;
+
+	h1 {
+		margin-left: 15px;
+		color: #222;
+		display: inline;
+	}
+
+	#nav-links {
+		float: right;
+		line-height: 1.15*2em;
+
+		a{
+			color: #6a698a;
+			opacity: 0.5;
+			text-decoration: none;
+			margin-right: 15px;
+			transition: 0.2s;
+			font-weight: 300;
+			cursor: pointer;
+			&:hover{
+				opacity: 1;
+			}
+		}
+	}
+}
+
+.index .notice {
+  margin: 20px auto;
+  padding: 15px 0;
+  text-align: center;
+  border: 1px solid #000;
+  border-width: 1px 0;
+  background: #666;
+}
