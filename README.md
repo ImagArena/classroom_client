@@ -10,5 +10,7 @@ Go to terminal, go to the `classroom_client` folder and run `npm install`
 
 ## Running
 
-### Run the server
-Go to terminal Go to terminal, go to the `classroom_client` folder and run `npm start`
+### Run the webpack server
+Go to terminal Go to terminal, go to the `classroom_client/client` folder and run `npm start`
+### Run the node server
+Go to terminal Go to terminal, go to the `classroom_client/server` folder and run `npm start`
