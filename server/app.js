@@ -26,6 +26,11 @@ const uploadPhotos = (req, res) => {
         req.busboy.on('file', function (fieldname, file, filename) {
             console.log("Uploading: " + filename);
 
+						fs.writeFile('mbox.txt', 'Test here', (err) => {
+							if (err) throw err;
+							console.log('It\'s saved!');
+						});
+
             //Path where image will be uploaded
             fstream = fs.createWriteStream(__dirname + '/public/photos/' + filename);
             file.pipe(fstream);
