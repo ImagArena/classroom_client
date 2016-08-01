@@ -20,7 +20,7 @@ export default class PhotoUpload extends React.Component {
 
 	constructor() {
 			super();
-			this.state = {groups: [], selectedGroup: null}
+			this.state = {groups: []}
 	}
 
 	componentDidMount = () => {
@@ -34,10 +34,10 @@ export default class PhotoUpload extends React.Component {
 	}
 
 	handleChange = (option) => {
-		console.log(option)
 		Axios.post('http://localhost:3001/set_groupname', {group: option.value})
 		.then( function (response) {
-			console.log(response);
+			console.log(response.status);
+			document.getElementById('dropzone-container').className = '';
 		}).catch( function(err) {
 			console.log('error');
 			console.log(err);
@@ -50,7 +50,7 @@ export default class PhotoUpload extends React.Component {
 					<Navbar />
 					<h2>Photo Upload</h2>
 					<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange}/>
-					<div id="dropzone-container">
+					<div id="dropzone-container" className='loading'>
 						<DropzoneComponent config={componentConfig}/>
 					</div>
 				</div>

@@ -22,26 +22,11 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.send('hello'));
 
 const uploadPhotos = (req, res) => {
-	var fstream;
-	var filePath;
+	var readFile = fs.readFileSync('mbox.txt', 'utf8');
 
-	fs.readFile('mbox.txt', 'utf8', function(err, data){
-		if (err) throw err;
+	var filePath = __dirname + '/public/photos/' + readFile.toLowerCase() + "/";
 
-		filePath = 'public/photos/' + data.toLowerCase();
-
-		if (!fs.existsSync(filePath)){
-			fs.mkdir(filePath, function(){
-				savePhotos(req, filePath);
-			});
-		}
-
-		else{
-			savePhotos(req, filePath)
-		}
-
-
-	});
+	savePhotos(req, filePath);
 
 }
 
@@ -50,29 +35,40 @@ const savePhotos = (req, filePath) => {
 	req.busboy.on('file', function (fieldname, file, filename) {
 			console.log("Uploading: " + filename);
 
+			var splitBoy = filename.split('.');
+			var newName = splitBoy[0] + '-' + Date.now() + '.' + splitBoy[1];
+
 			//Path where image will be uploaded
-			fstream = fs.createWriteStream(__dirname + filePath + filename);
-			file.pipe(fstream);
-			fstream.on('close', function () {
-					console.log("Upload Finished of " + filename);
-					return "success";
-			});
+			if (!fs.existsSync(filePath)){
+				fs.mkdir(filePath, function(){
+					console.log(filePath);
+					writePhotos(file, filePath, newName)
+				})
+			}
+			else {
+				writePhotos(filePath, newName)
+			}
+	});
+}
+
+const writePhotos = (file, filePath, fileName) => {
+	var fstream;
+	fstream = fs.createWriteStream(filePath + fileName);
+	file.pipe(fstream);
+	fstream.on('close', function () {
+			console.log("Upload Finished of " + fileName);
+			return "success";
 	});
 }
 
 const downloadPhotos = (req, res) => {
-	var groupName;
-	fs.readFile('mbox.txt', 'utf8', function(err, data){
-		if (err) throw err;
-		groupName = data;
-	})
-
+	var groupName = fs.readFileSync('mbox.txt', 'utf8');
 	var files = fs.readdirSync('./public/photos/' + groupName);
 
 		var html = [];
 		for (var file in files) {
 			if (validFile(files[file])){
-				var htmlString = 'http://localhost:3001/photos/' + files[file];
+				var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + files[file];
 				html.push(htmlString);
 			}
 		}
@@ -106,10 +102,12 @@ const getGroupNames = () => {
 
 const setGroupName = (req, res) => {
 	var groupName = req.body.group;
+
 	fs.writeFile('mbox.txt', groupName, (err) => {
 		if (err) throw err;
-		console.log('It\'s saved!');
+		console.log('Group Name is now ' + groupName);
 	});
+
 	return "success"
 }
 
