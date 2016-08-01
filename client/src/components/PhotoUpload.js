@@ -2,8 +2,10 @@ require('normalize.css/normalize.css');
 require('styles/PhotoUpload.scss');
 require('../../node_modules/react-dropzone-component/styles/filepicker.css');
 require('../../node_modules/dropzone/dist/min/dropzone.min.css');
+require('../../node_modules/react-dropdown/style.css');
 
 import React from 'react';
+import Dropdown from 'react-dropdown'
 import Axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
 import Navbar from '../components/Navbar';
@@ -14,20 +16,32 @@ var componentConfig = {
 		postUrl: 'http://localhost:3001/upload_photos'
 };
 
-class PhotoUpload extends React.Component {
+export default class PhotoUpload extends React.Component {
+
+	constructor() {
+			super();
+			this.state = {groups: [], selectedGroup: null}
+	}
 
 	componentDidMount = () => {
-		Axios.get('http://localhost:3001/get_classnames')
+		Axios.get('http://localhost:3001/get_groupnames')
 			.then(function(response) {
-				console.log(response);
-			})
+				this.setState({groups: response.data})
+			}.bind(this))
 			.catch(function(err) {
 				console.log(err);
 			})
-		}
+	}
 
-	handleChange = () => {
-		console.log("fuck");
+	handleChange = (option) => {
+		console.log(option)
+		Axios.post('http://localhost:3001/set_groupname', {group: option.value})
+		.then( function (response) {
+			console.log(response);
+		}).catch( function(err) {
+			console.log('error');
+			console.log(err);
+		})
 	}
 
   render = () => {
@@ -35,9 +49,7 @@ class PhotoUpload extends React.Component {
 				<div>
 					<Navbar />
 					<h2>Photo Upload</h2>
-					{/*<select onChange={this.handleChange}>
-					</select> */}
-
+					<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange}/>
 					<div id="dropzone-container">
 						<DropzoneComponent config={componentConfig}/>
 					</div>
@@ -45,8 +57,3 @@ class PhotoUpload extends React.Component {
     );
   }
 }
-
-PhotoUpload.defaultProps = {
-};
-
-export default PhotoUpload;

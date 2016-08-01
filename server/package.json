@@ -2,7 +2,7 @@
   "name": "blah",
   "version": "0.0.1",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js"
   },
   "author": "Tom Wall",
   "license": "MIT",
@@ -13,6 +13,7 @@
     "connect-busboy": "0.0.2",
     "express": "^4.13.3",
     "fs-extra": "^0.30.0",
+    "nodemon": "^1.10.0",
     "path": "^0.12.7"
   }
 }

@@ -31,7 +31,6 @@ bower_components/
 
 #Static
 
-server/public/photos
 server/*.mov
 server/*.mp4
 .DS_Store
