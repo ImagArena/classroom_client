@@ -76,7 +76,7 @@ const downloadPhotos = (req, res) => {
 }
 
 const validFile = (fileName) => {
-	return (fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif'));
+	return (fileName.endsWith('.jpg') || fileName.endsWith('.JPG') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif'));
 }
 
 const getGroupNames = () => {
