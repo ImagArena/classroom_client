@@ -36,7 +36,7 @@ const savePhotos = (req, filePath) => {
 			console.log("Uploading: " + filename);
 
 			var splitBoy = filename.split('.');
-			var newName = splitBoy[0] + '-' + Date.now() + '.' + splitBoy[1];
+			var newName = splitBoy[0] + '--' + Date.now() + '.' + splitBoy[1];
 
 			//Path where image will be uploaded
 			if (!fs.existsSync(filePath)){
@@ -76,7 +76,14 @@ const downloadPhotos = (req, res) => {
 }
 
 const validFile = (fileName) => {
-	return (fileName.endsWith('.jpg') || fileName.endsWith('.JPG') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif'));
+	if (fileName.endsWith('.jpg') || fileName.endsWith('.JPG') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif')){
+		var split = fileName.split('.');
+		split  = split[0].split('--');
+		var yesterday = Date.now() - (1000*60*60*24);
+
+		return (split[1] > yesterday);
+	};
+	return true;
 }
 
 const getGroupNames = () => {
