@@ -62,7 +62,7 @@ const writePhotos = (file, filePath, fileName) => {
 }
 
 const downloadPhotos = (req, res) => {
-	var groupName = fs.readFileSync('mbox.txt', 'utf8');
+	var groupName = fs.readFileSync('mbox.txt', 'utf8').toLowerCase();
 	var files = fs.readdirSync('./public/photos/' + groupName);
 
 		var html = [];
