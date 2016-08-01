@@ -2,7 +2,9 @@ require('normalize.css/normalize.css');
 require('styles/Slideshow.scss')
 
 import React from 'react';
-import $ from 'jquery';
+import Axios from 'axios'
+
+const seconds = 3;
 
 export default class Slideshow extends React.Component {
 
@@ -13,13 +15,19 @@ export default class Slideshow extends React.Component {
 	}
 
 	componentDidMount = () => {
-		$.get('http://localhost:3001/download_photos', function (result) {
-			this.setState({photos: result});
-			this.changePhotos()
-    }.bind(this));
+		Axios.get('http://localhost:3001/download_photos')
+			.then(function (response) {
+				this.setState({photos: response.data});
+				this.changePhotos();
+	    }.bind(this))
+		.catch(function (error) {
+			console.log(error);
+		})
+
 	}
 
 	changePhotos = () => {
+		console.log(this.state.photos)
 		var i=0;
 		this.setState({currentPhoto: this.state.photos[i]})
 		setInterval(function(){
@@ -28,7 +36,7 @@ export default class Slideshow extends React.Component {
 				i=0;
 			}
 			this.setState({currentPhoto: this.state.photos[i]})
-		}.bind(this), 3000)
+		}.bind(this), seconds*1000)
 	}
 
   render () {

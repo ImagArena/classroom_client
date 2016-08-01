@@ -11,10 +11,9 @@ import Slideshow from './components/Slideshow';
 ReactDOM.render((
 	<Router history={browserHistory}>
 
-	<Route path='/' component={Main}>
-		<Route path='/photo_upload' component={PhotoUpload}></Route>
-		<Route path='/slideshow' component={Slideshow}></Route>
-	</Route>
+	<Route path='/' component={Main} />
+	<Route path='/photo_upload' component={PhotoUpload} />
+	<Route path='/slideshow' component={Slideshow} />
 
 </Router>
 ), document.getElementById('app'));

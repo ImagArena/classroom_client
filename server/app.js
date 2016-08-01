@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import busboy from 'connect-busboy';
 import path from 'path';
 import fs from 'fs-extra';
+import readline from 'readline';
 
 const app = express();
 
@@ -36,7 +37,7 @@ const uploadPhotos = (req, res) => {
             file.pipe(fstream);
             fstream.on('close', function () {
                 console.log("Upload Finished of " + filename);
-                return "success"
+                return "success";
             });
         });
 }
@@ -45,14 +46,39 @@ const downloadPhotos = (req, res) => {
 	var files = fs.readdirSync('./public/photos')
 		var html = [];
 		for (var file in files) {
-			var htmlString = 'http://localhost:3001/photos/' + files[file];
-			html.push(htmlString);
+			if (validFile(files[file])){
+				var htmlString = 'http://localhost:3001/photos/' + files[file];
+				html.push(htmlString);
+			}
 		}
 		return html
 }
 
-app.get('/download_photos', (req, res) => res.send(downloadPhotos(req, res)) )
-app.post('/upload_photos', (req, res) => res.send(uploadPhotos(req, res)) )
+const validFile = (fileName) => {
+	return (fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif'));
+}
+
+const getClassNames = () => {
+	var lines = [];
+
+	var lineReader = readline.createInterface({
+		input: fs.createReadStream('classes.txt')
+	});
+
+	lineReader.on('line', function(line) {
+		lines.push(line);
+	});
+
+	lineReader.on('close', function() {
+		return lines;
+	});
+
+}
+
+app.get('/download_photos', (req, res) => res.send(downloadPhotos(req, res)) );
+app.get('/get_classnames', (req, res) => res.send(getClassNames(req, res)) );
+
+app.post('/upload_photos', (req, res) => res.send(uploadPhotos(req, res)) );
 
 var server = app.listen(3001,  () => {
     var host = server.address().address;

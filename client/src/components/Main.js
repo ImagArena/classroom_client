@@ -3,25 +3,23 @@ require('styles/App.scss');
 
 import React from 'react';
 import {Link} from 'react-router';
+import Navbar from '../components/Navbar';
 
-class AppComponent extends React.Component {
+class Main extends React.Component {
   render() {
     return (
       <div className="index">
-				<div id="navbar">
-					<h1>Imagarena Classroom Client (Demo)</h1>
-					<div id="nav-links">
-						<Link to="/photo_upload">Upload Photos</Link>
-						<Link to="/slideshow">Watch Slideshow</Link>
-					</div>
+				<Navbar />
+				<div id="home-container">
+					<h1 id="heads-up">Want to upload photos? Click here:</h1>
+					<Link id="big-ass-button" to="/photo_upload">Upload Photos</Link>
 				</div>
-				{this.props.children}
       </div>
     );
   }
 }
 
-AppComponent.defaultProps = {
+Main.defaultProps = {
 };
 
-export default AppComponent;
+export default Main;
