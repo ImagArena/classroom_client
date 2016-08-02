@@ -19,8 +19,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, res) => res.send('hello'));
-
 const uploadPhotos = (req, res) => {
 	var readFile = fs.readFileSync('mbox.txt', 'utf8');
 
@@ -118,11 +116,19 @@ const setGroupName = (req, res) => {
 	return "success"
 }
 
+const addGroupName = (req, groups) => {
+	if (groups.includes(proposition)){
+		return 'Exists';
+	}
+	return 'success';
+}
+
 app.get('/download_photos', (req, res) => res.send(downloadPhotos(req, res)) );
 app.get('/get_groupnames', (req, res) => getGroupNames().then( (result) => res.send(result) ) );
 
 app.post('/upload_photos', (req, res) => res.send(uploadPhotos(req, res)) );
 app.post('/set_groupname', (req, res) => res.send(setGroupName(req, res)) );
+app.post('/add_groupname', (req, res) => getGroupNames().then( (groups) => res.send(addGroupName(req, groups)) ) );
 
 var server = app.listen(3001,  () => {
     var host = server.address().address;
