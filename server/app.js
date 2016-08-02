@@ -44,7 +44,7 @@ const savePhotos = (req, filePath) => {
 				})
 			}
 			else {
-				writePhotos(filePath, newName)
+				writePhotos(file, filePath, newName)
 			}
 	});
 }
