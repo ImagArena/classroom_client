@@ -9,6 +9,7 @@ class Navbar extends React.Component {
 					<h1>Imagarena Photo Client (Alpha)</h1>
 					<div id="nav-links">
 						<Link to="/"><b>Upload Photos</b></Link>
+						{/*<Link to="/manage">Manage Groups</Link>*/}
 						<Link to="/slideshow/present">Preview Slideshow A (Real-Time)</Link>
 						<Link to="/slideshow/past">Preview Slideshow B (Past)</Link>
 					</div>

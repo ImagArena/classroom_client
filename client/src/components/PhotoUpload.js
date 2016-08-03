@@ -49,7 +49,9 @@ export default class PhotoUpload extends React.Component {
 				<div>
 					<Navbar />
 					<h2>Photo Upload</h2>
-					<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange}/>
+					<div id='dropdown-container'>
+						<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange}/>	
+					</div>
 					<div id="dropzone-container" className='loading'>
 						<DropzoneComponent config={componentConfig}/>
 					</div>
