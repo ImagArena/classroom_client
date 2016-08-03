@@ -34,7 +34,12 @@ export default class Slideshow extends React.Component {
 
 	changePhotos = () => {
 		var i=0;
-		this.setState({currentPhoto: this.state.photos[i]})
+
+		// initial photo waits for overlay
+		setTimeout(function(){
+			this.setState({currentPhoto: this.state.photos[i]});
+		}.bind(this), 300)
+
 		this.interval = setInterval(function(){
 			i++;
 			if (i > this.state.photos.length-1){
