@@ -11,11 +11,13 @@ export default class Slideshow extends React.Component {
 	constructor() {
 			super();
 			// Initial state of the component
-			this.state = {photos: [], currentPhoto: null}
+			this.state = {photos: [], currentPhoto: null};
 	}
 
 	componentDidMount = () => {
-		Axios.get('http://localhost:3001/download_photos')
+		var url = 'http://localhost:3001/download_photos?timeframe=' + this.props.params.timeframe;
+
+		Axios.get(url)
 			.then(function (response) {
 				this.setState({photos: response.data});
 				this.changePhotos();
@@ -26,11 +28,14 @@ export default class Slideshow extends React.Component {
 
 	}
 
+	componentWillUnmount = () => {
+		this.interval = false;
+	}
+
 	changePhotos = () => {
-		console.log(this.state.photos)
 		var i=0;
 		this.setState({currentPhoto: this.state.photos[i]})
-		setInterval(function(){
+		this.interval = setInterval(function(){
 			i++;
 			if (i > this.state.photos.length-1){
 				i=0;

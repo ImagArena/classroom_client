@@ -65,7 +65,7 @@ const downloadPhotos = (req, res) => {
 
 		var html = [];
 		for (var file in files) {
-			if (validFile(files[file])){
+			if (validFile(files[file], req.query.timeframe)){
 				var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + files[file];
 				html.push(htmlString);
 			}
@@ -73,12 +73,16 @@ const downloadPhotos = (req, res) => {
 		return html
 }
 
-const validFile = (fileName) => {
+const validFile = (fileName, timeframe) => {
 	if (fileName.endsWith('.jpg') || fileName.endsWith('.JPG') || fileName.endsWith('.jpeg') || fileName.endsWith('.png') || fileName.endsWith('.gif')){
 		var split = fileName.split('.');
 		split  = split[0].split('--');
-		var yesterday = Date.now() - (1000*60*60*24);
 
+		var yesterday = Date.now() - (1000*60*60*24);
+		
+		if (timeframe == 'past'){
+			return (split[1] < yesterday);
+		}
 		return (split[1] > yesterday);
 	};
 	return true;

@@ -9,11 +9,12 @@ import Slideshow from './components/Slideshow';
 
 // Render the main component into the dom
 ReactDOM.render((
-	<Router history={browserHistory}>
+<Router history={browserHistory}>
 
-	<Route path='/' component={Main} />
-	<Route path='/photo_upload' component={PhotoUpload} />
-	<Route path='/slideshow' component={Slideshow} />
+	<Route path='/'>
+		<IndexRoute component={PhotoUpload} />
+		<Route path='slideshow(/:timeframe)' component={Slideshow}/>
+	</Route>
 
 </Router>
 ), document.getElementById('app'));
