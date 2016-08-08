@@ -26,6 +26,23 @@ export default class Slideshow extends React.Component {
 			console.log(error);
 		})
 
+		// initialize redirect
+		var number = this.props.params.redirect;
+		if (number) {
+			window.onkeydown = function(){
+				checkKey(event);
+			};
+
+			/// NEXT SLIDE
+			function checkKey(event) {
+				var key = event.keyCode;
+					if (key == 38){
+						console.log('nice')
+						window.location.href =  "http://localhost:3001/html/slides/" + number + ".html";
+					}
+			}
+		}
+
 	}
 
 	componentWillUnmount = () => {

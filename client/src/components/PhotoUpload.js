@@ -13,8 +13,12 @@ import Navbar from '../components/Navbar';
 var componentConfig = {
     iconFiletypes: ['.jpg', '.png', '.gif'],
     showFiletypeIcon: true,
-		postUrl: 'http://localhost:3001/upload_photos'
+		postUrl: 'http://localhost:3001/upload_photos',
 };
+
+var djsConfig = {
+	addRemoveLinks: true
+}
 
 export default class PhotoUpload extends React.Component {
 
@@ -50,10 +54,10 @@ export default class PhotoUpload extends React.Component {
 					<Navbar />
 					<h2>Photo Upload</h2>
 					<div id='dropdown-container'>
-						<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange}/>	
+						<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange}/>
 					</div>
 					<div id="dropzone-container" className='loading'>
-						<DropzoneComponent config={componentConfig}/>
+						<DropzoneComponent config={componentConfig} djsConfig={djsConfig}/>
 					</div>
 				</div>
     );
