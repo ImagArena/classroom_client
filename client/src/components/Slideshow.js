@@ -2,7 +2,8 @@ require('normalize.css/normalize.css');
 require('styles/Slideshow.scss')
 
 import React from 'react';
-import Axios from 'axios'
+import Axios from 'axios';
+// import Clear from '../audio/Clear.mp3';
 
 const seconds = 3;
 
@@ -11,10 +12,18 @@ export default class Slideshow extends React.Component {
 	constructor() {
 			super();
 			// Initial state of the component
-			this.state = {photos: [], currentPhoto: null};
+			this.state = {photos: [],
+				currentPhoto: null,
+				video: "http://localhost:3001/video/out.webm"
+			};
 	}
 
 	componentDidMount = () => {
+
+		if (this.props.params.timeframe == 'past'){
+			this.setState({video: "http://localhost:3001/video/past.webm"})
+		}
+
 		var url = 'http://localhost:3001/download_photos?timeframe=' + this.props.params.timeframe;
 
 		Axios.get(url)
@@ -70,7 +79,7 @@ export default class Slideshow extends React.Component {
     return (
 				<div>
 					<div id="slideshow">
-						<video id="overlay" autoPlay="true" src="http://localhost:3001/video/out.webm" type="video/webm"></video>
+						<video id="overlay" autoPlay="true" src={this.state.video} type="video/webm"></video>
 						<img id="current-image" src={this.state.currentPhoto} />
 					</div>
 				</div>
