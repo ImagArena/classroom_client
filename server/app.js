@@ -79,13 +79,13 @@ const validFile = (fileName, timeframe) => {
 		split  = split[0].split('--');
 
 		var yesterday = Date.now() - (1000*60*60*24);
-		
+
 		if (timeframe == 'past'){
 			return (split[1] < yesterday);
 		}
 		return (split[1] > yesterday);
 	};
-	return true;
+	return false;
 }
 
 const getGroupNames = () => {
