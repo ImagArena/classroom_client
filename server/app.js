@@ -69,8 +69,15 @@ const downloadPhotos = (req, res) => {
 				var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + files[file];
 				html.push(htmlString);
 			}
+
 		}
-		return shuffle(html)
+		if (req.query.timeframe == 'past'){
+			return shuffle(html)
+		}
+		else{
+			return html
+		}
+
 }
 
 const shuffle = (a) => {
