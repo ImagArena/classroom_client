@@ -11,11 +11,13 @@ export default class Slideshow extends React.Component {
 	constructor() {
 			super();
 			// Initial state of the component
-			this.state = {photos: [], currentPhoto: null}
+			this.state = {photos: [], currentPhoto: null};
 	}
 
 	componentDidMount = () => {
-		Axios.get('http://localhost:3001/download_photos')
+		var url = 'http://localhost:3001/download_photos?timeframe=' + this.props.params.timeframe;
+
+		Axios.get(url)
 			.then(function (response) {
 				this.setState({photos: response.data});
 				this.changePhotos();
@@ -24,13 +26,38 @@ export default class Slideshow extends React.Component {
 			console.log(error);
 		})
 
+		// initialize redirect
+		var number = this.props.params.redirect;
+		if (number) {
+			window.onkeydown = function(){
+				checkKey(event);
+			};
+
+			/// NEXT SLIDE
+			function checkKey(event) {
+				var key = event.keyCode;
+					if (key == 38){
+						console.log('nice')
+						window.location.href =  "http://localhost:3001/html/slides/" + number + ".html";
+					}
+			}
+		}
+
+	}
+
+	componentWillUnmount = () => {
+		this.interval = false;
 	}
 
 	changePhotos = () => {
-		console.log(this.state.photos)
 		var i=0;
-		this.setState({currentPhoto: this.state.photos[i]})
-		setInterval(function(){
+
+		// initial photo waits for overlay
+		setTimeout(function(){
+			this.setState({currentPhoto: this.state.photos[i]});
+		}.bind(this), 300)
+
+		this.interval = setInterval(function(){
 			i++;
 			if (i > this.state.photos.length-1){
 				i=0;

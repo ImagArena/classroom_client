@@ -34,3 +34,8 @@ bower_components/
 server/*.mov
 server/*.mp4
 .DS_Store
+
+#Local data
+
+classes.txt
+mbox.txt

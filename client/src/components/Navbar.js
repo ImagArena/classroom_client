@@ -6,10 +6,12 @@ class Navbar extends React.Component {
     return (
       <div className="index">
 				<div id="navbar">
-					<h1>Imagarena Classroom Client (Demo)</h1>
+					<h1>Imagarena Photo Client (Alpha)</h1>
 					<div id="nav-links">
-						<Link to="/photo_upload"><b>Upload Photos</b></Link>
-						<Link to="/slideshow">Watch Slideshow</Link>
+						<Link to="/"><b>Upload Photos</b></Link>
+						<Link to="/manage">Manage Groups</Link>
+						<Link to="/slideshow/present">Preview Slideshow A (Real-Time)</Link>
+						<Link to="/slideshow/past">Preview Slideshow B (Past)</Link>
 					</div>
 				</div>
       </div>
