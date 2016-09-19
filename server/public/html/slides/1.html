@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 	<head>
-			
+
 		<title></title>
-			
+
 		<!-- CSS -->
-			
+
 		<link href="../../css/Slide.css" rel="stylesheet">
-	
+
 	</head>
 
 	<body>
-		
+
+		<div id="pause-overlay">
+			<img src="../Content/pause.png" />
+		</div>
+
 		<video autoplay id="bgvid">
 				<!-- VID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
-				<source src="../Content/Intro2.mp4" type="video/mp4"> 
+				<source src="../Content/Intro.mp4" type="video/mp4">
 		</video>
 
 		<script>
@@ -30,10 +34,23 @@
 					window.location.href = "2.html"
 					}
 				else if( key === 40){
+
+					var beep = new Audio('../Content/pause.wav');
+					beep.play()
+
 					var video = document.getElementById('bgvid');
-						video.paused ? video.play() : video.pause();
+					var overlay = document.getElementById('pause-overlay');
+						if (video.paused){
+							overlay.className = '';
+							video.play();
+						}
+						else {
+							video.pause();
+							overlay.className = 'show'
+						}
 					}
 		}
+
 		</script>
 
 	</body>
