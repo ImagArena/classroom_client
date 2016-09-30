@@ -80,6 +80,18 @@ const downloadPhotos = (req, res) => {
 
 }
 
+const deletePhoto = (req) => {
+	let fileName = req.body.fileName;
+	var prefix = fileName.split(".")[0]
+	var groupName = fs.readFileSync('mbox.txt', 'utf8').toLowerCase();
+	var files = fs.readdirSync('./public/photos/' + groupName);
+	for (var file in files) {
+		if (files[file].indexOf(prefix) !== -1){
+			fs.unlinkSync('./public/photos/' + groupName + '/' + files[file])
+		}
+	}
+}
+
 const shuffle = (a) => {
     var j, x, i;
     for (i = a.length; i; i--) {
@@ -151,6 +163,7 @@ app.get('/get_groupnames', (req, res) => getGroupNames().then( (result) => res.s
 app.post('/upload_photos', (req, res) => res.send(uploadPhotos(req, res)) );
 app.post('/set_groupname', (req, res) => res.send(setGroupName(req, res)) );
 app.post('/add_groupname', (req, res) => getGroupNames().then( (groups) => res.send(addGroupName(req, groups)) ) );
+app.post('/delete_photo', (req, res) => res.send(deletePhoto(req, res)) );
 
 var server = app.listen(3001,  () => {
     var host = server.address().address;
