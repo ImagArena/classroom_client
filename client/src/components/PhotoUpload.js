@@ -16,13 +16,13 @@ export default class PhotoUpload extends React.Component {
 			super();
 			this.state = {groups: []};
 			this.removedfile = (file) => {
-				Axios.post('http://localhost:3001/delete_photo', {fileName: file.name})
-				.then( function (response) {
-					console.log('fuck')
-				}).catch( function(err) {
-					console.log('error');
-					console.log(err);
-				})
+				// Axios.post('http://localhost:3001/delete_photo', {fileName: file.name})
+				// .then( function (response) {
+				// }).catch( function(err) {
+				// 	console.log('error');
+				// 	console.log(err);
+				// })
+				console.log(file)
 			}
 	}
 
