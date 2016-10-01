@@ -10,21 +10,20 @@ import Axios from 'axios';
 import DropzoneComponent from 'react-dropzone-component';
 import Navbar from '../components/Navbar';
 
-var componentConfig = {
-    iconFiletypes: ['.jpg', '.png', '.gif'],
-    showFiletypeIcon: true,
-		postUrl: 'http://localhost:3001/upload_photos',
-};
-
-var djsConfig = {
-	addRemoveLinks: true
-}
-
 export default class PhotoUpload extends React.Component {
 
 	constructor() {
 			super();
-			this.state = {groups: []}
+			this.state = {groups: []};
+			this.removedfile = (file) => {
+				Axios.post('http://localhost:3001/delete_photo', {fileName: file.name})
+				.then( function (response) {
+					console.log('fuck')
+				}).catch( function(err) {
+					console.log('error');
+					console.log(err);
+				})
+			}
 	}
 
 	componentDidMount = () => {
@@ -40,7 +39,6 @@ export default class PhotoUpload extends React.Component {
 	handleChange = (option) => {
 		Axios.post('http://localhost:3001/set_groupname', {group: option.value})
 		.then( function (response) {
-			console.log(response.status);
 			document.getElementById('dropzone-container').className = '';
 		}).catch( function(err) {
 			console.log('error');
@@ -49,15 +47,30 @@ export default class PhotoUpload extends React.Component {
 	}
 
   render = () => {
+
+		const componentConfig = {
+		    iconFiletypes: ['.jpg', '.png', '.gif'],
+		    showFiletypeIcon: true,
+				postUrl: 'http://localhost:3001/upload_photos',
+		};
+
+		const djsConfig = {
+			addRemoveLinks: true
+		}
+
+		const eventHandlers = {
+			removedfile: this.removedfile
+		}
+
     return (
 				<div>
 					<Navbar />
 					<h2>Photo Upload</h2>
 					<div id='dropdown-container'>
-						<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange}/>
+						<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange} />
 					</div>
 					<div id="dropzone-container" className='loading'>
-						<DropzoneComponent config={componentConfig} djsConfig={djsConfig}/>
+						<DropzoneComponent config={componentConfig} djsConfig={djsConfig} eventHandlers={eventHandlers} />
 					</div>
 				</div>
     );
