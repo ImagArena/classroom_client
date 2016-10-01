@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+	<head>
+
+		<title></title>
+
+		<!-- CSS -->
+
+		<link href="../../css/Slide.css" rel="stylesheet">
+
+	</head>
+
+	<body>
+
+		<div id="pause-overlay">
+			<img src="../Content/Pause.png" />
+		</div>
+
+		<video autoplay id="bgvid">
+				<!-- VID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+				<source src="../Content/Intro.mp4" type="video/mp4">
+		</video>
+
+		<script>
+
+		window.onkeydown = function(){
+		  checkKey(event);
+		};
+
+		/// NEXT SLIDE
+		function checkKey(event) {
+			var key = event.keyCode;
+				if (key == 38){
+					/// SLIDE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+					window.location.href = "Tutorial1.html"
+					}
+				else if( key === 40){
+
+					var beep = new Audio('../Content/Pause.wav');
+					beep.play()
+
+					var video = document.getElementById('bgvid');
+					var overlay = document.getElementById('pause-overlay');
+						if (video.paused){
+							overlay.className = '';
+							video.play();
+						}
+						else {
+							video.pause();
+							overlay.className = 'show'
+						}
+					}
+		}
+
+		</script>
+
+	</body>
+
+</html>

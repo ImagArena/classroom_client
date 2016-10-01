@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+	<head>
+
+		<title></title>
+
+		<!-- CSS -->
+
+		<link href="../../css/Slide.css" rel="stylesheet">
+
+	</head>
+
+	<body>
+
+		<div id="pause-overlay">
+<<<<<<< HEAD:server/public/sequences/TEMPLATE/Slides/3a_Load.html
+			<img src="../Content/Pause.png" />
+=======
+			<img src="../Content/pause.png" />
+>>>>>>> 43d3a217840c9d0487bc05e40cdf64442854d767:server/public/html/slides/1.html
+		</div>
+
+		<video autoplay id="bgvid">
+				<!-- VID ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-->
+<<<<<<< HEAD:server/public/sequences/TEMPLATE/Slides/3a_Load.html
+				<source src="../Content/" type="video/mp4">
+=======
+				<source src="../Content/Intro.mp4" type="video/mp4">
+>>>>>>> 43d3a217840c9d0487bc05e40cdf64442854d767:server/public/html/slides/1.html
+		</video>
+
+		<script>
+
+		window.onkeydown = function(){
+		  checkKey(event);
+		};
+
+		/// NEXT SLIDE
+		function checkKey(event) {
+			var key = event.keyCode;
+				if (key == 38){
+					/// SLIDE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+					window.location.href = "3b_Open.html"
+					}
+				else if( key === 40){
+
+<<<<<<< HEAD:server/public/sequences/TEMPLATE/Slides/3a_Load.html
+					var beep = new Audio('../Content/Pause.wav');
+=======
+					var beep = new Audio('../Content/pause.wav');
+>>>>>>> 43d3a217840c9d0487bc05e40cdf64442854d767:server/public/html/slides/1.html
+					beep.play()
+
+					var video = document.getElementById('bgvid');
+					var overlay = document.getElementById('pause-overlay');
+						if (video.paused){
+							overlay.className = '';
+							video.play();
+						}
+						else {
+							video.pause();
+							overlay.className = 'show'
+						}
+					}
+		}
+
+		</script>
+
+	</body>
+
+</html>

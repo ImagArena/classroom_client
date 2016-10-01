@@ -33,6 +33,8 @@ bower_components/
 
 *.mov
 *.mp4
+
+
 .DS_Store
 
 #Local data
