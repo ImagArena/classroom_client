@@ -40,4 +40,4 @@ bower_components/
 #Local data
 
 classes.txt
-mbox.txt
+server/mbox.txt

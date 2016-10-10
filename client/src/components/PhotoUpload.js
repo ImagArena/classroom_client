@@ -15,14 +15,17 @@ export default class PhotoUpload extends React.Component {
 	constructor() {
 			super();
 			this.state = {groups: []};
+			this.noDelete = false;
 			this.removedfile = (file) => {
-				// Axios.post('http://localhost:3001/delete_photo', {fileName: file.name})
-				// .then( function (response) {
-				// }).catch( function(err) {
-				// 	console.log('error');
-				// 	console.log(err);
-				// })
-				console.log(file)
+				if (!this.noDelete) {
+					Axios.post('http://localhost:3001/delete_photo', {fileName: file.name})
+					.then( function (response) {
+					}).catch( function(err) {
+						console.log('error');
+						console.log(err);
+					})
+					console.log(file)
+				}
 			}
 	}
 
@@ -34,6 +37,10 @@ export default class PhotoUpload extends React.Component {
 			.catch(function(err) {
 				console.log(err);
 			})
+	}
+
+	componentWillUnmount = () => {
+		this.noDelete = true;
 	}
 
 	handleChange = (option) => {
