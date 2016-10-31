@@ -3,6 +3,7 @@ require('styles/Slideshow.scss')
 
 import React from 'react';
 import Axios from 'axios';
+import Reminder from '../audio/Reminder.mp3';
 
 const seconds = 3;
 
@@ -10,6 +11,7 @@ export default class Slideshow extends React.Component {
 
 	constructor() {
 			super();
+			this.reminder = new Audio(Reminder);
 			// Initial state of the component
 			this.state = {photos: [],
 				currentPhoto: null,
@@ -32,7 +34,7 @@ export default class Slideshow extends React.Component {
 				for (let i=4; i<photos.length; i++) {
 					if (!((i-1) % 5 )) {
 						console.log('fuck')
-						photos.splice(i, 0, 'http://localhost:3001/vaultboy.png');
+						photos.splice(i, 0, 'http://localhost:3001/ClearReminder.gif');
 					}
 				}
 
@@ -76,6 +78,9 @@ export default class Slideshow extends React.Component {
 
 		this.interval = setInterval(function(){
 			i++;
+			if (this.state.photos[i] == "http://localhost:3001/ClearReminder.gif") {
+				this.reminder.play();
+			}
 			if (i > this.state.photos.length-1){
 				i=0;
 			}
