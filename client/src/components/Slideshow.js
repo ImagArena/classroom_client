@@ -3,7 +3,6 @@ require('styles/Slideshow.scss')
 
 import React from 'react';
 import Axios from 'axios';
-// import Clear from '../audio/Clear.mp3';
 
 const seconds = 3;
 
@@ -28,6 +27,15 @@ export default class Slideshow extends React.Component {
 
 		Axios.get(url)
 			.then(function (response) {
+				let photos = response.data;
+				console.log(photos.length);
+				for (let i=4; i<photos.length; i++) {
+					if (!((i-1) % 5 )) {
+						console.log('fuck')
+						photos.splice(i, 0, 'http://localhost:3001/vaultboy.png');
+					}
+				}
+
 				this.setState({photos: response.data});
 				this.changePhotos();
 	    }.bind(this))
