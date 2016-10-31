@@ -47,7 +47,7 @@ export default class Slideshow extends React.Component {
 				var key = event.keyCode;
 					if (key == 38){
 						console.log('nice')
-						window.location.href =  "http://localhost:3001/html/slides/" + number + ".html";
+						window.location.href =  "http://localhost:3001/sequences/lvl3/Slides/" + number + ".html";
 					}
 			}
 		}
