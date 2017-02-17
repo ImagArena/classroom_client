@@ -14,7 +14,12 @@ export default class PhotoUpload extends React.Component {
 
 	constructor() {
 			super();
-			this.state = {groups: []};
+			this.state = {
+				groups: [],
+				groupName: '',
+				levelNumber: null
+			};
+
 			this.noDelete = false;
 			this.removedfile = (file) => {
 				if (!this.noDelete) {
@@ -27,12 +32,25 @@ export default class PhotoUpload extends React.Component {
 					console.log(file)
 				}
 			}
+
+			this.levels = [
+				{value: 1, label: "Level 1"},
+				{value: 2, label: "Level 2"},
+				{value: 3, label: "Level 3"},
+				{value: 4, label: "Level 4"},
+				{value: 5, label: "Level 5"},
+				{value: 6, label: "Level 6"}
+			];
 	}
 
 	componentDidMount = () => {
-		Axios.get('http://localhost:3001/get_groupnames')
+		Axios.get('http://localhost:3001/get_groupinfo')
 			.then(function(response) {
-				this.setState({groups: response.data})
+				this.setState({
+					groups: response.data.groups,
+					groupName: response.data.groupName,
+					levelNumber: response.data.levelNumber.toString()
+				})
 			}.bind(this))
 			.catch(function(err) {
 				console.log(err);
@@ -43,10 +61,22 @@ export default class PhotoUpload extends React.Component {
 		this.noDelete = true;
 	}
 
-	handleChange = (option) => {
-		Axios.post('http://localhost:3001/set_groupname', {group: option.value})
-		.then( function (response) {
-			document.getElementById('dropzone-container').className = '';
+	changeGroupName = (option) => {
+		this.setState({groupName: option}, this.handleChange);
+	}
+
+	changelevelNumber = (option) => {
+		console.log(option)
+		this.setState({levelNumber: option.value}, this.handleChange);
+	}
+
+	handleChange = () => {
+		Axios.post('http://localhost:3001/set_groupinfo', {groupName: this.state.groupName, levelNumber: this.state.levelNumber})
+		.then(function (response) {
+			var dropzone = document.getElementById('dropzone-container');
+			if (dropzone.className)
+				dropzone.className = '';
+
 		}).catch( function(err) {
 			console.log('error');
 			console.log(err);
@@ -69,16 +99,19 @@ export default class PhotoUpload extends React.Component {
 			removedfile: this.removedfile
 		}
 
+		var dropboy = (this.state.groupName && this.state.levelNumber) ? 	<div id="dropzone-container"><DropzoneComponent config={componentConfig} djsConfig={djsConfig} eventHandlers={eventHandlers} /></div> : null;
+
     return (
 				<div>
 					<Navbar />
 					<h2>Photo Upload</h2>
 					<div id='dropdown-container'>
-						<Dropdown options={this.state.groups} placeholder="Choose group name" onChange={this.handleChange} />
+						<Dropdown options={this.state.groups} placeholder="Choose Group" value={this.state.groupName} onChange={this.changeGroupName} />
+						<Dropdown options={this.levels} placeholder="Select Level Number" value={this.levels[this.state.levelNumber - 1]} onChange={this.changelevelNumber} />
 					</div>
-					<div id="dropzone-container" className='loading'>
-						<DropzoneComponent config={componentConfig} djsConfig={djsConfig} eventHandlers={eventHandlers} />
-					</div>
+
+					{dropboy}
+
 				</div>
     );
   }

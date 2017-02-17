@@ -39,5 +39,6 @@ bower_components/
 
 #Local data
 
-classes.txt
+server/classes.txt
 server/mbox.txt
+server/group.json

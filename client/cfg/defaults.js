@@ -34,7 +34,6 @@ function getDefaultModules() {
         test: /\.(png|jpg|gif|woff|woff2)$/,
         loader: 'url-loader?limit=8192'
       },
-
       {
         test: /\.(wav|mp3|m4a)$/,
         loader: 'file-loader'
