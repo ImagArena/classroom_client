@@ -4,6 +4,7 @@ import busboy from 'connect-busboy';
 import path from 'path';
 import fs from 'fs-extra';
 import readline from 'readline';
+import jsonfile from 'jsonfile';
 
 const app = express();
 
@@ -20,9 +21,15 @@ app.use((req, res, next) => {
 });
 
 const uploadPhotos = (req, res) => {
-	var readFile = fs.readFileSync('mbox.txt', 'utf8');
+	var obj = jsonfile.readFileSync('group.json');
 
-	var filePath = __dirname + '/public/photos/' + readFile.toLowerCase() + "/";
+	var filePath = __dirname + '/public/photos/' + obj.groupName.toLowerCase() + "/";
+
+	if (!fs.existsSync(filePath)) {
+		fs.mkdirSync(filePath);
+	}
+
+	filePath += obj.levelNumber + "/";
 
 	savePhotos(req, filePath);
 
@@ -32,26 +39,23 @@ const savePhotos = (req, filePath) => {
 	req.pipe(req.busboy);
 	req.busboy.on('file', function (fieldname, file, filename) {
 			console.log("Uploading: " + filename);
-
 			var splitBoy = filename.split('.');
 			var newName = splitBoy[0] + '--' + Date.now() + '.' + splitBoy[1];
 
 			//Path where image will be uploaded
 			if (!fs.existsSync(filePath)){
 				fs.mkdir(filePath, function(){
-					console.log(filePath);
-					writePhotos(file, filePath, newName)
+					writePhotos(file, filePath, newName);
 				})
 			}
 			else {
-				writePhotos(file, filePath, newName)
+				writePhotos(file, filePath, newName);
 			}
 	});
 }
 
 const writePhotos = (file, filePath, fileName) => {
-	var fstream;
-	fstream = fs.createWriteStream(filePath + fileName);
+	var fstream = fs.createWriteStream(filePath + fileName);
 	file.pipe(fstream);
 	fstream.on('close', function () {
 			console.log("Upload Finished of " + fileName);
@@ -60,36 +64,57 @@ const writePhotos = (file, filePath, fileName) => {
 }
 
 const downloadPhotos = (req, res) => {
-	var groupName = fs.readFileSync('mbox.txt', 'utf8').toLowerCase().trim();
-	var files = fs.readdirSync('./public/photos/' + groupName);
+	var groupName = jsonfile.readFileSync('group.json').groupName.toLowerCase();
+	var levels = fs.readdirSync('./public/photos/' + groupName);
+	levels.sort();
 
-		var html = [];
-		for (var file in files) {
-			if (validFile(files[file], req.query.timeframe)){
-				var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + files[file];
+	var html = [];
+
+	var last = levels.splice(-1, 1);
+
+	if (req.query.timeframe != 'past'){
+		levels = last;
+	}
+	for (var i= 0; i < levels.length; i++) {
+		try {
+			let files = fs.readdirSync('./public/photos/' + groupName + '/' + levels[i]);
+			for (var file in files) {
+				var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + levels[i] + '/' + files[file];
 				html.push(htmlString);
 			}
+		}
+		catch (err) {
+			console.log(err)
+		}
 
-		}
-		if (req.query.timeframe == 'past'){
-			return shuffle(html)
-		}
-		else{
-			return html
-		}
+
+	}
+	if (req.query.timeframe == 'past'){
+		return shuffle(html)
+	}
+	else {
+		return html
+	}
 
 }
 
 const deletePhoto = (req) => {
 	let fileName = req.body.fileName;
-	var prefix = fileName.split(".")[0]
-	var groupName = fs.readFileSync('mbox.txt', 'utf8').toLowerCase();
-	var files = fs.readdirSync('./public/photos/' + groupName);
-	for (var file in files) {
-		if (files[file].indexOf(prefix) !== -1){
-			fs.unlinkSync('./public/photos/' + groupName + '/' + files[file])
+	var prefix = fileName.split(".")[0];
+
+	jsonfile.readFile('group.json', (err, obj) => {
+		var groupName = obj.groupName;
+		var levelNumber = obj.levelNumber;
+
+		var files = fs.readdirSync('./public/photos/' + groupName + '/' + levelNumber);
+
+		for (var file in files) {
+			if (files[file].indexOf(prefix) !== -1){
+				fs.unlinkSync('./public/photos/' + groupName + '/' + levelNumber + '/' + files[file])
+			}
 		}
-	}
+
+	});
 }
 
 const shuffle = (a) => {
@@ -118,33 +143,54 @@ const validFile = (fileName, timeframe) => {
 	return false;
 }
 
-const getGroupNames = () => {
-  let p = new Promise((resolve, reject) => {
+const getGroupInfo = () => {
+  let groups = new Promise((resolve, reject) => {
 		var lines = [];
 
 		var lineReader = readline.createInterface({
 		    input: fs.createReadStream('classes.txt')
 		});
 
-		lineReader.on('line', function(line) {
+		lineReader.on('line', (line) => {
 		    lines.push(line);
 		});
 
-		lineReader.on('close', function() {
+		lineReader.on('close', () => {
 		    resolve(lines);
 		});
-	})
+	});
 
-	return p;
+	let groupInfo = new Promise((resolve, reject) => {
+		jsonfile.readFile('group.json', (err, obj) => {
+			resolve(obj);
+		});
+	});
+
+	return Promise.all([groups, groupInfo]).then((values) => {
+		return {
+			groups: values[0],
+			groupName: values[1].groupName,
+			levelNumber: values[1].levelNumber
+		}
+	});
 
 }
 
-const setGroupName = (req, res) => {
-	var groupName = req.body.group;
+const setGroupInfo = (req, res) => {
+	var groupName = req.body.groupName;
+	var levelNumber = req.body.levelNumber;
 
-	fs.writeFile('mbox.txt', groupName, (err) => {
-		if (err) throw err;
-		console.log('Group Name is now ' + groupName);
+	var file = 'group.json';
+
+	jsonfile.readFile(file, (err, obj) => {
+		console.log(err);
+		obj.groupName = groupName.value;
+		obj.levelNumber = levelNumber;
+
+		jsonfile.writeFile(file, obj, {spaces: 2}, (err, obj) => {
+		  console.log(err);
+		});
+
 	});
 
 	return "success"
@@ -158,10 +204,10 @@ const addGroupName = (req, groups) => {
 }
 
 app.get('/download_photos', (req, res) => res.send(downloadPhotos(req, res)) );
-app.get('/get_groupnames', (req, res) => getGroupNames().then( (result) => res.send(result) ) );
+app.get('/get_groupinfo', (req, res) => getGroupInfo().then( (result) => res.send(result) ) );
 
 app.post('/upload_photos', (req, res) => res.send(uploadPhotos(req, res)) );
-app.post('/set_groupname', (req, res) => res.send(setGroupName(req, res)) );
+app.post('/set_groupinfo', (req, res) => res.send(setGroupInfo(req, res)) );
 app.post('/add_groupname', (req, res) => getGroupNames().then( (groups) => res.send(addGroupName(req, groups)) ) );
 app.post('/delete_photo', (req, res) => res.send(deletePhoto(req, res)) );
 
