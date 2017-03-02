@@ -12,7 +12,7 @@ export default class Slideshow extends React.Component {
 			super();
 			// Initial state of the component
 			this.state = {photos: [],
-				currentPhoto: null,
+				currentPhoto: {file: null},
 				video: "http://localhost:3001/video/out.webm"
 			};
 	}
@@ -23,12 +23,11 @@ export default class Slideshow extends React.Component {
 			this.setState({video: "http://localhost:3001/video/past.webm"})
 		}
 
-		var url = 'http://localhost:3001/download_photos?timeframe=' + this.props.params.timeframe;
+		var url = 'http://localhost:3001/download_photos?timeframe=' + this.props.params.timeframe + '&groupname=' + this.props.params.groupname + '&levelnumber=' + this.props.params.levelnumber;
 
 		Axios.get(url)
 			.then(function (response) {
 				let photos = response.data;
-				console.log(response);
 				for (let i=4; i < photos.length; i++) {
 					if (!((i-1) % 5 )) {
 						photos.splice(i, 0, 'http://localhost:3001/ClearReminder.gif');
@@ -42,6 +41,10 @@ export default class Slideshow extends React.Component {
 			console.log(error);
 		})
 
+		setTimeout(function() {
+			document.getElementById('photo-label').className = '';
+		}, 6000)
+
 		// initialize redirect
 		var number = this.props.params.redirect;
 		if (number) {
@@ -53,7 +56,6 @@ export default class Slideshow extends React.Component {
 			function checkKey(event) {
 				var key = event.keyCode;
 					if (key == 38){
-						console.log('nice')
 						window.location.href =  "http://localhost:3001/sequences/lvl3/Slides/" + number + ".html";
 					}
 			}
@@ -87,7 +89,8 @@ export default class Slideshow extends React.Component {
 				<div>
 					<div id="slideshow">
 						<video id="overlay" autoPlay="true" src={this.state.video} type="video/webm"></video>
-						<img id="current-image" src={this.state.currentPhoto} />
+						<img id="current-image" src={this.state.currentPhoto.file} />
+						{ this.props.params.timeframe == 'past' ? <div id="photo-label" className="hidden"><h2>{this.state.currentPhoto.groupName}</h2><span id="level">Level {this.state.currentPhoto.levelNumber}</span></div> : null}
 					</div>
 				</div>
     );

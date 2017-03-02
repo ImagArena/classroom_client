@@ -64,36 +64,41 @@ const writePhotos = (file, filePath, fileName) => {
 }
 
 const downloadPhotos = (req, res) => {
-	var groupName = jsonfile.readFileSync('group.json').groupName.toLowerCase();
-	var levels = fs.readdirSync('./public/photos/' + groupName);
-	levels.sort();
+
+
+	var level;
+	var groupName;
 
 	var html = [];
 
-	var last = levels.splice(-1, 1);
-
-	if (req.query.timeframe != 'past'){
-		levels = last;
-	}
-	for (var i= 0; i < levels.length; i++) {
-		try {
-			let files = fs.readdirSync('./public/photos/' + groupName + '/' + levels[i]);
-			for (var file in files) {
-				var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + levels[i] + '/' + files[file];
-				html.push(htmlString);
-			}
-		}
-		catch (err) {
-			console.log(err)
-		}
-
-
-	}
-	if (req.query.timeframe == 'past'){
-		return shuffle(html)
+	if (req.query.timeframe == 'present'){
+		groupName = jsonfile.readFileSync('group.json').groupName.toLowerCase();
+		var levels = fs.readdirSync('./public/photos/' + groupName);
+		levels.sort();
+		level = levels.splice(-1, 1);
 	}
 	else {
-		return html
+		level = req.query.levelnumber;
+		groupName = req.query.groupname;
+	}
+
+
+		let files = fs.readdirSync('./public/photos/' + groupName + '/' + level);
+		for (var file in files) {
+			var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + level + '/' + files[file];
+			html.push({
+				file: htmlString,
+				groupName: groupName,
+				levelNumber: level
+			});
+		}
+
+
+	if (req.query.timeframe == 'past'){
+		return shuffle(html);
+	}
+	else {
+		return html;
 	}
 
 }

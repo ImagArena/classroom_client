@@ -15,3 +15,33 @@
 	height: 100%;
 	object-fit: cover;
 }
+
+#photo-label {
+	width: 100%;
+	position: fixed;
+	background: gray;
+	display: flex;
+	bottom: 0;
+	justify-content: center;
+	align-items: center;
+	transition: 500ms;
+
+	&.hidden {
+		opacity: 0;
+	}
+
+	h2 {
+		font-size: 50px;
+		width: auto;
+		display: inline-block;
+	}
+	#level {
+		background-color: rgb(50, 50, 50);
+		padding: 10px 20px;
+		right: 15px;
+		position: absolute;
+		font-size: 32px;
+		border-radius: 50px 50px 50px 50px;
+	}
+
+}
