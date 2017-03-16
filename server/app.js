@@ -71,8 +71,9 @@ const downloadPhotos = (req, res) => {
 
 	var html = [];
 
+	groupName = jsonfile.readFileSync('group.json').groupName.toLowerCase();
+
 	if (req.query.timeframe == 'present'){
-		groupName = jsonfile.readFileSync('group.json').groupName.toLowerCase();
 		var levels = fs.readdirSync('./public/photos/' + groupName);
 		levels.sort();
 		level = levels.splice(-1, 1);
@@ -92,9 +93,6 @@ const downloadPhotos = (req, res) => {
 			groups.splice(deletingIndex, 1);
 
 			groupName = groups[Math.floor(Math.random()*groups.length)];
-		}
-		else {
-			groupName = req.query.groupname;
 		}
 
 	}
