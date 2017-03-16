@@ -20,7 +20,7 @@ export default class Slideshow extends React.Component {
 	componentDidMount = () => {
 
 		if (this.props.params.timeframe == 'past'){
-			this.setState({video: "http://localhost:3001/video/past.webm"})
+			this.setState({video: "http://localhost:3001/video/" + color + ".webm"});
 		}
 
 		var url = 'http://localhost:3001/download_photos?timeframe=' + this.props.params.timeframe + '&groupname=' + this.props.params.groupname + '&levelnumber=' + this.props.params.levelnumber;

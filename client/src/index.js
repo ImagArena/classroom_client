@@ -14,7 +14,7 @@ ReactDOM.render((
 
 	<Route path='/'>
 		<IndexRoute component={PhotoUpload} />
-		<Route path='slideshow(/:timeframe)(/:groupname)(/:levelnumber)(/:redirect)' component={Slideshow}/>
+		<Route path='slideshow(/:timeframe)(/:groupname)(/:levelnumber)(/:color)(/:redirect)' component={Slideshow}/>
 		<Route path='manage' component={Manage}></Route>
 	</Route>
 
