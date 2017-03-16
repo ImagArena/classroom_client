@@ -17,7 +17,15 @@ export default class PhotoUpload extends React.Component {
 			this.state = {
 				groups: [],
 				groupName: '',
-				levelNumber: null
+				levelNumber: null,
+				levels: [
+					{value: 1, label: "Level 1"},
+					{value: 2, label: "Level 2"},
+					{value: 3, label: "Level 3"},
+					{value: 4, label: "Level 4"},
+					{value: 5, label: "Level 5"},
+					{value: 6, label: "Level 6"}
+				]
 			};
 
 			this.noDelete = false;
@@ -33,14 +41,6 @@ export default class PhotoUpload extends React.Component {
 				}
 			}
 
-			this.levels = [
-				{value: 1, label: "Level 1"},
-				{value: 2, label: "Level 2"},
-				{value: 3, label: "Level 3"},
-				{value: 4, label: "Level 4"},
-				{value: 5, label: "Level 5"},
-				{value: 6, label: "Level 6"}
-			];
 	}
 
 	componentDidMount = () => {
@@ -66,7 +66,6 @@ export default class PhotoUpload extends React.Component {
 	}
 
 	changelevelNumber = (option) => {
-		console.log(option)
 		this.setState({levelNumber: option.value}, this.handleChange);
 	}
 
@@ -107,7 +106,7 @@ export default class PhotoUpload extends React.Component {
 					<h2>Photo Upload</h2>
 					<div id='dropdown-container'>
 						<Dropdown options={this.state.groups} placeholder="Choose Group" value={this.state.groupName} onChange={this.changeGroupName} />
-						<Dropdown options={this.levels} placeholder="Select Level Number" value={this.levels[this.state.levelNumber - 1]} onChange={this.changelevelNumber} />
+						<Dropdown options={this.state.levels} placeholder="Select Level Number" value={this.state.levels[this.state.levelNumber - 1]} onChange={this.changelevelNumber} />
 					</div>
 
 					{dropboy}
