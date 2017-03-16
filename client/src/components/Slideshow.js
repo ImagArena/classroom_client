@@ -28,11 +28,6 @@ export default class Slideshow extends React.Component {
 		Axios.get(url)
 			.then(function (response) {
 				let photos = response.data;
-				for (let i=4; i < photos.length; i++) {
-					if (!((i-1) % 5 )) {
-						photos.splice(i, 0, 'http://localhost:3001/ClearReminder.gif');
-					}
-				}
 
 				this.setState({photos: response.data});
 				this.changePhotos();
