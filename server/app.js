@@ -79,7 +79,24 @@ const downloadPhotos = (req, res) => {
 	}
 	else {
 		level = req.query.levelnumber;
-		groupName = req.query.groupname;
+
+		if (req.query.grouptype == 'external') {
+			let current = jsonfile.readFileSync('group.json').groupName.toLowerCase();
+
+			let groups = fs.readdirSync('./public/photos');
+
+			let deletingIndex = groups.indexOf(current);
+			groups.splice(deletingIndex, 1);
+
+			deletingIndex = groups.indexOf('.gitignore');
+			groups.splice(deletingIndex, 1);
+
+			groupName = groups[Math.floor(Math.random()*groups.length)];
+		}
+		else {
+			groupName = req.query.groupname;
+		}
+
 	}
 
 
