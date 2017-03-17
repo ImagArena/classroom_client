@@ -68,6 +68,7 @@ const downloadPhotos = (req, res) => {
 
 	var level;
 	var groupName;
+	var files = [];
 
 	var html = [];
 
@@ -77,8 +78,21 @@ const downloadPhotos = (req, res) => {
 		var levels = fs.readdirSync('./public/photos/' + groupName);
 		levels.sort();
 		level = levels.splice(-1, 1);
+
+		files = fs.readdirSync('./public/photos/' + groupName + '/' + level);
+
+		for (var file in files) {
+			var htmlString = 'http://localhost:3001/photos/' + groupName + '/' + level + '/' + files[file];
+			html.push({
+				file: htmlString,
+				groupName: groupName,
+				levelNumber: level
+			});
+		}
+
 	}
 	else {
+
 		level = req.query.levelnumber;
 
 		if (req.query.grouptype == 'external') {
@@ -87,30 +101,50 @@ const downloadPhotos = (req, res) => {
 			let groups = fs.readdirSync('./public/photos');
 
 			let deletingIndex = groups.indexOf(current);
-			groups.splice(deletingIndex, 1);
+			if (deletingIndex > -1)
+				groups.splice(deletingIndex, 1);
 
 			deletingIndex = groups.indexOf('.gitignore');
-			groups.splice(deletingIndex, 1);
+			if (deletingIndex > -1)
+				groups.splice(deletingIndex, 1);
 
 			deletingIndex = groups.indexOf('.DS_Store');
-			groups.splice(deletingIndex, 1);
+			if (deletingIndex > -1)
+				groups.splice(deletingIndex, 1);
 
-			groupName = groups[Math.floor(Math.random()*groups.length)];
+			for (let i in groups) {
+
+				let levelPhotos = fs.readdirSync('./public/photos/' + groups[i] + '/' + level);
+
+				for (let x in levelPhotos) {
+					let fileName =  groups[i] + '/' + level + '/' + levelPhotos[x];
+
+					var htmlString = 'http://localhost:3001/photos/'+ fileName;
+					html.push({
+						file: htmlString,
+						groupName: groups[i],
+						levelNumber: level
+					});
+				}
+
+			}
+
+		}
+		else {
+			files = fs.readdirSync('./public/photos/' + groupName + '/' + level);
+
+			for (let file in files) {
+				var htmlString = 'http://localhost:3001/photos/' + groupName + '/' + level + '/' + files[file];
+				html.push({
+					file: htmlString,
+					groupName: groupName,
+					levelNumber: level
+				});
+			}
+
 		}
 
 	}
-
-
-		let files = fs.readdirSync('./public/photos/' + groupName + '/' + level);
-		for (var file in files) {
-			var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + level + '/' + files[file];
-			html.push({
-				file: htmlString,
-				groupName: groupName,
-				levelNumber: level
-			});
-		}
-
 
 	if (req.query.timeframe == 'past'){
 		return shuffle(html);
