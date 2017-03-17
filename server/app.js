@@ -92,6 +92,9 @@ const downloadPhotos = (req, res) => {
 			deletingIndex = groups.indexOf('.gitignore');
 			groups.splice(deletingIndex, 1);
 
+			deletingIndex = groups.indexOf('.DS_Store');
+			groups.splice(deletingIndex, 1);
+
 			groupName = groups[Math.floor(Math.random()*groups.length)];
 		}
 
