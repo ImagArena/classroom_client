@@ -5,6 +5,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import readline from 'readline';
 import jsonfile from 'jsonfile';
+import titlecase from 'titlecase'
 
 const app = express();
 
@@ -99,6 +100,19 @@ const downloadPhotos = (req, res) => {
 				groups.splice(deletingIndex, 1);
 
 			groupName = groups[Math.floor(Math.random()*groups.length)];
+
+			let looping = true;
+			while (looping) {
+				try {
+					fs.readdirSync('./public/photos/' + groupName + '/' + level);
+					looping = false;
+				}
+				catch (err) {
+					deletingIndex = groups.indexOf(groupName);
+					groups.splice(deletingIndex, 1);
+					groupName = groups[Math.floor(Math.random()*groups.length)];
+				}
+			}
 		}
 
 	}
@@ -109,7 +123,7 @@ const downloadPhotos = (req, res) => {
 			var htmlString = 'http://localhost:3001/photos/'+ groupName + '/' + level + '/' + files[file];
 			html.push({
 				file: htmlString,
-				groupName: groupName,
+				groupName: title(groupName),
 				levelNumber: level
 			});
 		}
@@ -122,6 +136,12 @@ const downloadPhotos = (req, res) => {
 		return html;
 	}
 
+}
+
+const title= (name) => {
+	name = name.split("_");
+	name = name.join(" ");
+	return titlecase.toTitleCase(name)
 }
 
 const deletePhoto = (req) => {
